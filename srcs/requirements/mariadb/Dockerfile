@@ -4,12 +4,12 @@ RUN apt-get update -y && apt-get upgrade -y
 
 RUN apt-get install mariadb-server -y
 
-COPY ./tools/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY ../requirements/mariadb/tools/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-COPY ./tools/create.sh /
+COPY ../requirements/mariadb/tools/create.sh /
 
 EXPOSE 3306
 
 RUN service mysql start
 
-CMD [ "/create.sh" ]
+CMD [ "./create.sh" ]

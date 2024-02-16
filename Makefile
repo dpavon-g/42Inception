@@ -23,4 +23,4 @@ status:
 	docker ps
 
 images:
-	docker images ls
+	docker images
