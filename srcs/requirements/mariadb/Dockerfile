@@ -10,6 +10,4 @@ COPY ../requirements/mariadb/tools/create.sh /
 
 EXPOSE 3306
 
-RUN service mysql start
-
-CMD [ "./create.sh" ]
+CMD [ "/create.sh" ]

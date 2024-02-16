@@ -2,25 +2,37 @@
 all: up
 
 build:
-	docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 up: 
-	docker-compose -f ./srcs/docker-compose.yml up -d
+	@docker-compose -f ./srcs/docker-compose.yml up -d
 
 start:
-	docker-compose -f ./srcs/docker-compose.yml start -d
+	@docker-compose -f ./srcs/docker-compose.yml start -d
 
 stop:
-	docker-compose -f ./srcs/docker-compose.yml stop
+	@docker-compose -f ./srcs/docker-compose.yml stop
 
 volumes:
-	docker volume ls
+	@docker volume ls
 
-# containers:
-# 	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}} {{.Name}}' $(ID)
+ip:
+	@docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(ID)
 
 status:
-	docker ps
+	@docker ps
 
 images:
-	docker images
+	@docker images
+
+help:
+
+	@echo "---------------"
+	@echo "  make build"
+	@echo "  make up"
+	@echo "  make start"
+	@echo "  make stop"
+	@echo "  make volumes"
+	@echo "  make ip ID=<volume ID>"
+	@echo "  make status"
+	@echo "  make images"
