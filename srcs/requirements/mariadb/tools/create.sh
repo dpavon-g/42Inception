@@ -1,6 +1,7 @@
 #!/bin/bash
+sleep 5
 
-service mysql start 
+service mariadb start 
 
 echo "CREATE DATABASE IF NOT EXISTS dpavon_db;" > create.sql
 echo "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'rootpass' ;" >> create.sql
@@ -11,6 +12,8 @@ echo "FLUSH PRIVILEGES;" >> create.sql
 
 mysql < create.sql
 
-kill $(cat /var/run/mysqld/mysqld.pid)
+service mariadb stop
+
+sleep 10
 
 mysqld
