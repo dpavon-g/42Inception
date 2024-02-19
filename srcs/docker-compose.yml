@@ -1,9 +1,27 @@
 version: '3'
+
+networks:
+  inception:
+    name: inception
+
 services:
   mariadb:
     container_name: mariadb-container
+    restart: always
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
     build:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
     ports:
       - "3306:3306"
+  nginx:
+    container_name: nginx-container
+    restart: always
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    ports:
+      - "80:80"

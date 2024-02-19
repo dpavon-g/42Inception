@@ -9,6 +9,8 @@ COPY ../requirements/mariadb/tools/50-server.cnf /etc/mysql/mariadb.conf.d/
 
 COPY ../requirements/mariadb/tools/create.sh /
 
+RUN chmod +x /create.sh
+
 EXPOSE 3306
 
 ENTRYPOINT ["/create.sh" ]
