@@ -5,23 +5,47 @@ networks:
     name: inception
 
 services:
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress/.
+    image: wordpress:42
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
   mariadb:
     container_name: mariadb-container
     restart: always
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
+    image: mariadb:42
+    networks:
+      - inception
     ports:
       - "3306:3306"
-  nginx:
-    container_name: nginx-container
     restart: always
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    ports:
-      - "80:80"
+  # nginx:
+  #   container_name: nginx-container
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: requirements/nginx/Dockerfile
+  #   ports:
+  #     - "80:80"
+
+volumes:
+        wordpress:
+                name: wordpress
+                driver: local
+                driver_opts:
+                        device: /home/pei/Documents/42Inception/srcs/requirements/wordpress
+                        o: bind
+                        type: none
