@@ -10,6 +10,8 @@ RUN apt install -y nginx && apt install openssl -y
 
 COPY ../requirements/nginx/tools/install.sh /
 
+COPY ../requirements/nginx/tools/nginx.conf /etc/nginx/sites-available/default
+
 EXPOSE 80
 
 ENTRYPOINT ["/install.sh" ]
