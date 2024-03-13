@@ -5,33 +5,40 @@ networks:
     name: inception
 
 services:
-  # wordpress:
-  #   container_name: wordpress
-  #   build: ./requirements/wordpress/.
-  #   image: wordpress:42
-  #   depends_on:
-  #     - mariadb
-  #   volumes:
-  #     - wordpress:/var/www/html
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   restart: always
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress/.
+    image: wordpress:42
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - inception
+    # restart: always
+
   nginx:
     container_name: nginx-container
     env_file:
       - .env
     depends_on:
       - mariadb
+    volumes:
+     - wordpress:/var/www/html
     build:
       context: .
       dockerfile: requirements/nginx/Dockerfile
+    image: nginx:42
     ports:
       - "443:443"
+    networks:
+      - inception
     restart: always
 
-  
   mariadb:
     container_name: mariadb-container
     env_file:
@@ -46,12 +53,32 @@ services:
       - "3306:3306"
     restart: always
  
-
+# Creamos los volumenes compartidos para que se pueda acceder a los
+# archivos desde fuera del contenedor.
 volumes:
         wordpress:
                 name: wordpress
                 driver: local
                 driver_opts:
+                        # La línea del device tengo que cambiarla en la máquina virtual.
                         device: /home/pei/Documents/42Inception/srcs/requirements/wordpress
+                        # Especifica como debe de montar el volumen, en este caso se montará
+                        # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
+                        # Se usa para especificar el tipo de volumen que se está creando.
+                        # Al especificar none no asignamos ningún tipo específico por lo que nos permite
+                        # tener más control sobre como se maneja el volumen.
+                        type: none
+        mariadb:
+                name: mariadb
+                driver: local
+                driver_opts:
+                        # La línea del device tengo que cambiarla en la máquina virtual.
+                        device: /home/pei/Documents/42Inception/srcs/requirements/mariadb
+                        # Especifica como debe de montar el volumen, en este caso se montará
+                        # como si fuera una especie de puente entre el equipo y docker.
+                        o: bind
+                        # Se usa para especificar el tipo de volumen que se está creando.
+                        # Al especificar none no asignamos ningún tipo específico por lo que nos permite
+                        # tener más control sobre como se maneja el volumen.
                         type: none

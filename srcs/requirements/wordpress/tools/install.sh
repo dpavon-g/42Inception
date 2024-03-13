@@ -1,28 +1,38 @@
 #!/bin/bash
 
-# Creamos las carpetas para usar en el nginx posteriormente
+# Creamos si no existen los directorios donde estará alojado nuestro WordPress
 mkdir /var/www/
 mkdir /var/www/html
 
-# Eliminamos todo lo que pueda haber dentro por si wordpress
-# tuviera algo creado.
 cd /var/www/html
+
+# Eliminamos todo lo que haya dentro por si existía y tenía algo dentro
+# (Puede ser ya que está dentro de un volumen y guarda los datos)
 rm -rf *
 
-# Descargamos wordpress y lo descomprimimos dentro de html
-wget https://wordpress.org/latest.tar.gz
-tar -xzvf latest.tar.gz
+# Descargamos e instalamos el configurador de WordPress
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar 
+chmod +x wp-cli.phar 
+mv wp-cli.phar /usr/local/bin/wp
+wp core download --allow-root
 
-wp core install --url=$DOMAIN_NAME/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USR --admin_password=$WP_ADMIN_PWD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
+#TODO: Ver porque tengo que hacer esto de esta forma.
+# Movemos el archivo de configuración de WordPress que hemos escrito al directorio 
+# donde van a estar nuestras páginas web.
+mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+mv /wp-config.php /var/www/html/wp-config.php
 
-wp user create $WP_USR $WP_EMAIL --role=author --user_pass=$WP_PWD --allow-root
+# Modificamos el archivo de configuración para que tenga la las credenciales que necesitamos
+# para que la instalación funcione.
+sed -i -r "s/database/$DB_NAME/1"   wp-config.php
+sed -i -r "s/user/$DB_ROOT/1"  wp-config.php
+sed -i -r "s/password/$DB_ROOT_PASS/1"    wp-config.php
+sed -i -r "s/localhost/mariadb/1"    wp-config.php
 
-wp theme install astra --activate --allow-root
+# Usamos el configurador de WordPress de línea de comandos para instalar el servicio.
+wp core install --url=$DOMAIN/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS\
+ --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
 
-wp plugin install redis-cache --activate --allow-root
-
+# Creamos la carpeta que utilizará fastCGI para intentar crear el socket UNIX
 mkdir /run/php
-
-wp redis enable --allow-root
-
-/usr/sbin/php-fpm7.3 -F
+/usr/sbin/php-fpm7.4 -F
