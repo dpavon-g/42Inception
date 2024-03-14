@@ -35,7 +35,7 @@ sleep 1
 wp core install --url=$DOMAIN/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS\
  --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
 
-wp user create "${WP_ADMIN_USER}" "${WP_EMAIL}" --user_pass="${WP_PASS}" --role=author
+wp user create "${WP_USER}" "${WP_EMAIL}" --user_pass="${WP_PASS}" --role=author --allow-root
 
 sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4/fpm/pool.d/www.conf
 
