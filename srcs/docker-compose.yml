@@ -9,8 +9,6 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress/.
     image: wordpress:42
-    ports:
-      - "9000:9000"
     depends_on:
       - mariadb
     volumes:
@@ -19,6 +17,8 @@ services:
       - .env
     networks:
       - inception
+    ports:
+      - "9000:9000"
     # restart: always
 
   nginx:
@@ -61,7 +61,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: /home/pei/Documents/42Inception/srcs/requirements/wordpress
+                        device: ./srcs/requirements/wordpress
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
@@ -74,7 +74,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: /home/pei/Documents/42Inception/srcs/requirements/mariadb
+                        device: ./srcs/requirements/mariadb
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
