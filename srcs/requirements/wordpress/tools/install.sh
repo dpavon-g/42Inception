@@ -20,7 +20,6 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 wp core download --allow-root
 
-#TODO: Ver porque tengo que hacer esto de esta forma.
 # Movemos el archivo de configuración de WordPress que hemos escrito al directorio 
 # donde van a estar nuestras páginas web.
 mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php

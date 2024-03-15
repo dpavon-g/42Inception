@@ -59,7 +59,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: ./srcs/requirements/wordpress
+                        device: /home/dpavon-g/data
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
@@ -72,7 +72,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: ./srcs/requirements/mariadb
+                        device: /home/dpavon-g/data
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
