@@ -11,6 +11,4 @@ RUN apt-get install curl -y
 COPY ./tools/wp-config.php /wp-config.php
 COPY ./tools/install.sh /
 
-EXPOSE 9000
-
 CMD ["/install.sh"]

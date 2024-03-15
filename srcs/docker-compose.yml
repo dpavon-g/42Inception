@@ -17,9 +17,7 @@ services:
       - .env
     networks:
       - inception
-    ports:
-      - "9000:9000"
-    # restart: always
+    restart: always
 
   nginx:
     container_name: nginx
@@ -51,8 +49,6 @@ services:
     image: mariadb:42
     networks:
       - inception
-    ports:
-      - "3306:3306"
     restart: always
  
 # Creamos los volumenes compartidos para que se pueda acceder a los

@@ -11,6 +11,6 @@ COPY ../requirements/mariadb/tools/create.sh /
 
 RUN chmod +x /create.sh
 
-EXPOSE 3306
+# EXPOSE 3306
 
 ENTRYPOINT ["/create.sh" ]
