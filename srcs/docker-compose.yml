@@ -22,7 +22,7 @@ services:
     # restart: always
 
   nginx:
-    container_name: nginx-container
+    container_name: nginx
     env_file:
       - .env
     depends_on:
@@ -40,12 +40,14 @@ services:
     restart: always
 
   mariadb:
-    container_name: mariadb-container
+    container_name: mariadb
     env_file:
       - .env
     build:
       context: .
       dockerfile: requirements/mariadb/Dockerfile
+    volumes:
+      - mariadb:/var/lib/mysql
     image: mariadb:42
     networks:
       - inception

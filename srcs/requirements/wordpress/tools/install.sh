@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # Creamos si no existen los directorios donde estará alojado nuestro WordPress
+
+# if [ ! -f /var/www/html/wp-config.php ]; then
+
+# fi
 mkdir /var/www/
 mkdir /var/www/html
 
@@ -20,7 +24,7 @@ wp core download --allow-root
 # Movemos el archivo de configuración de WordPress que hemos escrito al directorio 
 # donde van a estar nuestras páginas web.
 mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-mv /wp-config.php /var/www/html/wp-config.php
+cp /wp-config.php /var/www/html/wp-config.php
 
 # Modificamos el archivo de configuración para que tenga la las credenciales que necesitamos
 # para que la instalación funcione.

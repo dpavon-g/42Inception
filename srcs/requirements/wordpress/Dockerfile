@@ -13,4 +13,4 @@ COPY ./tools/install.sh /
 
 EXPOSE 9000
 
-ENTRYPOINT ["/install.sh"]
+CMD ["/install.sh"]
