@@ -5,16 +5,17 @@ networks:
     name: inception
 
 services:
+
   wordpress:
     container_name: wordpress
-    build: ./requirements/wordpress/.
-    image: wordpress:42
+    env_file:
+      - .env
     depends_on:
       - mariadb
     volumes:
       - wordpress:/var/www/html
-    env_file:
-      - .env
+    build: ./requirements/wordpress/.
+    image: wordpress:42
     networks:
       - inception
     restart: always
@@ -27,9 +28,7 @@ services:
       - mariadb
     volumes:
      - wordpress:/var/www/html
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
+    build: ./requirements/nginx/.
     image: nginx:42
     ports:
       - "443:443"
@@ -41,11 +40,9 @@ services:
     container_name: mariadb
     env_file:
       - .env
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
     volumes:
       - mariadb:/var/lib/mysql
+    build: ./requirements/mariadb/.
     image: mariadb:42
     networks:
       - inception
@@ -59,7 +56,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: /home/dpavon-g/data
+                        device: /home/dpavon-g/data/wordpress
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind
@@ -72,7 +69,7 @@ volumes:
                 driver: local
                 driver_opts:
                         # La línea del device tengo que cambiarla en la máquina virtual.
-                        device: /home/dpavon-g/data
+                        device: /home/dpavon-g/data/mariadb
                         # Especifica como debe de montar el volumen, en este caso se montará
                         # como si fuera una especie de puente entre el equipo y docker.
                         o: bind

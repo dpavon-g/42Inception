@@ -4,6 +4,6 @@ RUN apt-get update -y && apt-get upgrade -y
 
 RUN apt install -y nginx && apt install openssl -y
 
-COPY ../requirements/nginx/tools/install.sh /
+COPY ./tools/install.sh /
 
 ENTRYPOINT ["/install.sh" ]
